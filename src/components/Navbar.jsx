@@ -83,12 +83,8 @@ const Navbar = () => {
                 <div className={`absolute inset-0 bg-white/95 backdrop-blur-2xl transition-opacity duration-700 ${isOpen ? 'opacity-100' : 'opacity-0'}`} />
 
                 <div className="relative z-10 flex flex-col items-center space-y-8 w-full px-6">
-                    {/* Menu Header (Logo & Close) */}
-                    <div className="absolute top-0 left-0 right-0 p-8 flex justify-between items-center">
-                        <div className="text-xl font-bold tracking-tight flex items-center gap-1 text-black">
-                            <span className="font-header text-2xl">GRAFIVOX</span>
-                            <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-                        </div>
+                    {/* Menu Header (Close Only) */}
+                    <div className="absolute top-0 right-0 p-8">
                         <button
                             className="p-2 text-black bg-black/5 rounded-full"
                             onClick={() => setIsOpen(false)}
