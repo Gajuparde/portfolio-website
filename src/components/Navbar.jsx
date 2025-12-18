@@ -15,9 +15,19 @@ const Navbar = () => {
 
     // Close mobile menu when route changes
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        if (isOpen) setIsOpen(false);
-    }, [location, isOpen]);
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isOpen]);
+
+    useEffect(() => {
+        setIsOpen(false);
+    }, [location]);
 
     const links = [
         { name: 'Home', href: '/#home' },
@@ -29,7 +39,7 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${scrolled
+            <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
                 ? 'py-4 bg-white/80 backdrop-blur-3xl border-b border-black/5 shadow-sm'
                 : 'py-8 bg-transparent'
                 }`}>
@@ -53,36 +63,57 @@ const Navbar = () => {
                         ))}
                     </div>
 
-                    {/* Theme Toggle & Mobile Menu Button */}
-                    <div className="flex items-center gap-3 relative z-50">
+                    {/* Mobile Menu Button */}
+                    <div className="flex md:hidden items-center gap-3 relative z-50">
                         <button
-                            className="md:hidden p-2 text-black bg-white/60 rounded-full backdrop-blur-md shadow-md border border-black/5"
+                            className="p-2 text-black bg-white/60 rounded-full backdrop-blur-md shadow-md border border-black/5 flex items-center justify-center transition-all active:scale-95"
                             onClick={() => setIsOpen(!isOpen)}
+                            aria-label="Toggle Menu"
                         >
-                            {isOpen ? <X size={28} /> : <Menu size={28} />}
+                            {isOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
                     </div>
                 </div>
             </nav>
 
             {/* Mobile Fullscreen Menu */}
-            <div className={`fixed inset-0 bg-white z-30 flex flex-col items-center justify-center space-y-8 transition-all duration-500 transform ${isOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 pointer-events-none'}`}>
-                <button
-                    className="absolute top-6 right-6 p-2 text-black"
-                    onClick={() => setIsOpen(false)}
-                >
-                    <X size={32} />
-                </button>
-                {links.map((link) => (
-                    <a
-                        key={link.name}
-                        href={link.href}
-                        onClick={() => setIsOpen(false)}
-                        className="text-5xl font-bold font-header hover:text-blue-600 transition-colors"
-                    >
-                        {link.name}
-                    </a>
-                ))}
+            <div className={`fixed inset-0 z-[60] flex flex-col items-center justify-center transition-all duration-700 ease-[cubic-bezier(0.85,0,0.15,1)] ${isOpen ? 'translate-y-0' : '-translate-y-full'
+                }`}>
+                {/* Backdrop with extreme blur */}
+                <div className={`absolute inset-0 bg-white/95 backdrop-blur-2xl transition-opacity duration-700 ${isOpen ? 'opacity-100' : 'opacity-0'}`} />
+
+                <div className="relative z-10 flex flex-col items-center space-y-8 w-full px-6">
+                    {/* Menu Header (Logo & Close) */}
+                    <div className="absolute top-0 left-0 right-0 p-8 flex justify-between items-center">
+                        <div className="text-xl font-bold tracking-tight flex items-center gap-1 text-black">
+                            <span className="font-header text-2xl">GRAFIVOX</span>
+                            <span className="w-2 h-2 rounded-full bg-blue-600"></span>
+                        </div>
+                        <button
+                            className="p-2 text-black bg-black/5 rounded-full"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            <X size={28} />
+                        </button>
+                    </div>
+
+                    {links.map((link, index) => (
+                        <a
+                            key={link.name}
+                            href={link.href}
+                            onClick={() => setIsOpen(false)}
+                            className={`text-5xl font-black font-header tracking-tighter text-black hover:text-blue-600 transition-all duration-300 transform ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
+                                }`}
+                            style={{ transitionDelay: `${index * 50}ms` }}
+                        >
+                            {link.name}
+                        </a>
+                    ))}
+
+                    <div className={`pt-12 transition-all duration-700 delay-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">thegrafivox@gmail.com</p>
+                    </div>
+                </div>
             </div>
         </>
     );
