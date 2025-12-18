@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Instagram, Linkedin, Dribbble, CheckCircle2, Send, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
     const formRef = useRef();
@@ -9,11 +10,23 @@ const Contact = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setStatus("submitting");
-        setTimeout(() => {
-            setStatus("success");
-            formRef.current.reset();
-            setTimeout(() => setStatus("idle"), 3000);
-        }, 1500);
+
+        // REPLACE WITH YOUR ACTUAL EMAILJS SERVICE_ID, TEMPLATE_ID, AND PUBLIC_KEY
+        const SERVICE_ID = "YOUR_SERVICE_ID";
+        const TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+        const PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+
+        emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
+            .then((result) => {
+                console.log(result.text);
+                setStatus("success");
+                formRef.current.reset();
+                setTimeout(() => setStatus("idle"), 5000);
+            }, (error) => {
+                console.log(error.text);
+                setStatus("error");
+                setTimeout(() => setStatus("idle"), 5000);
+            });
     };
 
 
@@ -99,7 +112,9 @@ const Contact = () => {
                                         <span>Sending...</span>
                                     </>
                                 ) : status === "success" ? (
-                                    <>Success! <CheckCircle2 size={20} /></>
+                                    <>Sent Successfully! <CheckCircle2 size={20} /></>
+                                ) : status === "error" ? (
+                                    <>Failed to Send. Try Again!</>
                                 ) : (
                                     <>Send Message <Send size={18} /></>
                                 )}

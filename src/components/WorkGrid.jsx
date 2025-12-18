@@ -75,7 +75,7 @@ const WorkGrid = () => {
                                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-2 opacity-60 group-hover:opacity-100 transition-opacity">
                                         {project.category}
                                     </p>
-                                    <h3 className="text-2xl md:text-3xl font-black font-header text-black tracking-tighter leading-none mb-4 group-hover:text-blue-600 transition-colors">
+                                    <h3 className="text-2xl md:text-3xl font-bold font-header text-black mb-4 group-hover:text-blue-600 transition-colors">
                                         {project.title}
                                     </h3>
                                     <div className="flex flex-wrap gap-2">
