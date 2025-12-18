@@ -37,48 +37,52 @@ const WorkGrid = () => {
 
                 <motion.div
                     layout
-                    className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+                    className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12"
                 >
                     {filteredProjects.map((project) => (
                         <motion.div
                             layout
                             key={project.id}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.9 }}
-                            transition={{ duration: 0.3 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5 }}
                         >
                             <Link
                                 to={`/work/${project.id}`}
-                                className="group cursor-pointer block relative rounded-2xl transition-all duration-500 hover:-translate-y-3"
+                                className="group cursor-pointer block relative rounded-3xl"
                             >
-                                <div className="relative overflow-hidden rounded-2xl aspect-[4/3] mb-6 border border-white/50 shadow-sm bg-white/30 backdrop-blur-sm">
-                                    <img
+                                <div className="relative overflow-hidden rounded-[2rem] aspect-[4/3] mb-6 border border-zinc-200 shadow-sm bg-zinc-50">
+                                    <motion.img
+                                        whileHover={{ scale: 1.05 }}
+                                        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                                         src={project.imageUrl}
                                         alt={`Mockup of ${project.title}`}
-                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                        className="w-full h-full object-cover"
                                     />
 
-                                    {/* Hover Overlay */}
-                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center p-6 text-center">
-                                        <span className="text-white bg-transparent border-2 border-white px-8 py-3 rounded-full font-bold transition-all hover:bg-white hover:text-black transform translate-y-4 group-hover:translate-y-0 duration-500">
-                                            View Case Study
-                                        </span>
-                                    </div>
-
-                                    {/* Circular View Button */}
-                                    <div className="absolute top-6 right-6 w-12 h-12 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 bg-white/90 text-black transition-all duration-300 shadow-xl hover:scale-110 hover:bg-blue-600 hover:text-white transform -translate-y-4 group-hover:translate-y-0">
-                                        <ArrowUpRight size={20} />
+                                    {/* Glassmorphism Hover Overlay */}
+                                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-all duration-500 overflow-hidden">
+                                        <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+                                            <div className="bg-white/90 backdrop-blur-md px-10 py-4 rounded-full font-black uppercase tracking-[0.2em] text-[10px] text-black border border-white/20 shadow-2xl transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out flex items-center gap-3">
+                                                Discover Case Study <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div className="px-2">
-                                    <h3 className="text-2xl font-bold font-header group-hover:text-blue-600 transition-colors duration-300 italic-hover">{project.title}</h3>
-                                    <div className="flex flex-wrap gap-2 mt-3">
+                                <div className="px-4 transition-all duration-500 group-hover:translate-x-1">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                                        {project.category}
+                                    </p>
+                                    <h3 className="text-2xl md:text-3xl font-black font-header text-black tracking-tighter leading-none mb-4 group-hover:text-blue-600 transition-colors">
+                                        {project.title}
+                                    </h3>
+                                    <div className="flex flex-wrap gap-2">
                                         {project.tags.map(tag => (
                                             <span
                                                 key={tag}
-                                                className="text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full bg-white/60 border border-white/50 text-gray-500 transition-colors group-hover:bg-blue-50 group-hover:text-blue-600"
+                                                className="text-[9px] font-black uppercase tracking-wider px-3 py-1.5 rounded-full bg-zinc-100 text-zinc-500 border border-zinc-200 group-hover:border-blue-200 group-hover:bg-blue-50/50 group-hover:text-blue-600 transition-all duration-300"
                                             >
                                                 {tag}
                                             </span>
